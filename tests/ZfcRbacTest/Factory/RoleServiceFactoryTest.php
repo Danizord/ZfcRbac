@@ -48,10 +48,15 @@ class RoleServiceFactoryTest extends \PHPUnit_Framework_TestCase
             $this->getMock('ZfcRbac\Identity\IdentityProviderInterface')
         );
 
+        $traversalStrategy = $this->getMock('Rbac\Traversal\Strategy\TraversalStrategyInterface');
+
+        $serviceManager->setService('Rbac\Traversal\Strategy\TraversalStrategyInterface', $traversalStrategy);
+
         $factory     = new RoleServiceFactory();
         $roleService = $factory->createService($serviceManager);
 
         $this->assertInstanceOf('ZfcRbac\Service\RoleService', $roleService);
         $this->assertEquals('guest', $roleService->getGuestRole());
+        $this->assertAttributeSame($traversalStrategy, 'traversalStrategy', $roleService);
     }
 }
